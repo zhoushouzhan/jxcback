@@ -1,0 +1,8 @@
+{extend name="layout"} {block name="pagetitle"}{$r.title}{/block} {block
+name="main"}
+<div>
+  <h1>{$r.title}</h1>
+</div>
+<div>{$r.content|raw}</div>
+
+{/block}

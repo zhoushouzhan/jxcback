@@ -1,0 +1,127 @@
+{extend name="layout" /} {block name="main"}
+<div class="member_paner">
+  <div class="menu">
+    <div class="header">
+      <div>账号</div>
+      <div>{$member.username}</div>
+    </div>
+    <div class="item">
+      <a href="{:url('index/member/index')}">基础资料</a>
+    </div>
+    <div class="item">
+      <a href="{:url('index/member/safe')}">账号安全</a>
+    </div>
+    <div class="item">
+      <a href="{:url('index/member/safe')}">文章中心</a>
+    </div>
+  </div>
+  <div class="main" id="container">
+    <div class="mtit">
+      <div>编辑-基础资料</div>
+    </div>
+    <hr />
+    <form
+      action="{:url('index/member/edit')}"
+      method="post"
+      onsubmit="return formcallback()"
+    >
+      <table border="1px">
+        <tr>
+          <td>ID：</td>
+          <td>{$member.id}</td>
+        </tr>
+        <tr>
+          <td>账号：</td>
+          <td>{$member.username}</td>
+        </tr>
+        <tr>
+          <td>注册时间：</td>
+          <td>{$member.create_time}</td>
+        </tr>
+        <tr>
+          <td>手机：</td>
+          <td>
+            <input type="text" name="mobile" value="{$member.mobile}" />
+          </td>
+        </tr>
+        <tr>
+          <td>邮箱：</td>
+          <td><input type="text" name="email" value="{$member.email}" /></td>
+        </tr>
+        <tr>
+          <td>头像：</td>
+          <td>
+            {if $member.avatar}
+            <img
+              src="{$member.userpic.filepath}"
+              width="70"
+              height="70"
+              id="avatar"
+            />
+            <br />
+            <button type="button" id="upload">重新上传</button>
+            {else} <button type="button" id="upload">点我上传</button> {/if}
+          </td>
+        </tr>
+      </table>
+      <div>
+        <button type="submit">保存</button>
+        <a href="javascript:history.go(-1)">返回</a>
+      </div>
+    </form>
+  </div>
+</div>
+{/block} {block name="script"}
+<script>
+  function formcallback() {
+    var params = $("form").serialize();
+    $.ajax({
+      type: "post",
+      url: $("form").attr("action"),
+      data: params,
+      dataType: "json",
+      success: function (response) {
+        alert(response.msg);
+        if (response.data.url) {
+          window.location.href = response.data.url;
+        }
+      },
+      error: function (e) {
+        alert(e.responseJSON.message);
+      },
+    });
+    return false;
+  }
+</script>
+<script src="__DEFAULT__js/plupload.js"></script>
+<script>
+  var uploader = new plupload.Uploader({
+    runtimes: "html5",
+    browse_button: "upload",
+    container: document.getElementById("container"),
+    multipart_params: { tag: "userpic" },
+    url: "{:url('index/member/upload')}",
+    filters: {
+      max_file_size: "2mb",
+      mime_types: [{ title: "Image files", extensions: "jpg,gif,png" }],
+    },
+    init: {
+      PostInit: function () {},
+      FilesAdded: function (up, files) {
+        uploader.start();
+      },
+      UploadProgress: function (up, file) {},
+      FileUploaded: function (up, file, res) {
+        let d = JSON.parse(res.response);
+        console.log(res.response);
+        if (document.getElementById("avatar")) {
+          document.getElementById("avatar").src = d.data.url;
+        }
+        alert(d.msg);
+      },
+      Error: function (up, err) {},
+    },
+  });
+  uploader.init();
+</script>
+{/block}

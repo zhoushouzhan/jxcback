@@ -1,0 +1,15 @@
+{extend name="layout"} {block name="pagetitle"}{$category.title}{/block} {block
+name="main"}
+<div class="list">
+  {volist name="dataList" id="vo"}
+  <div>
+    <div>{$key}</div>
+    <div>
+      <a href="{:url('index/Article/index',['id'=>$vo.id])}">{$vo.title}</a>
+    </div>
+    <div>{$vo.create_time}</div>
+  </div>
+  {/volist}
+</div>
+
+{/block}

@@ -1,0 +1,41 @@
+{extend name="layout" /}
+{block name="main"}
+
+    <table border="1px">
+        <tr>
+          <td>ID：</td>
+          <td>{$member.id}</td>
+        </tr>
+        <tr>
+          <td>账号：</td>
+          <td>{$member.username}</td>
+        </tr>
+        <tr>
+          <td>注册时间：</td>
+          <td>{$member.create_time}</td>
+        </tr>
+        <tr>
+          <td>手机：</td>
+          <td>{$member.mobile|default="未填写"}</td>
+        </tr>
+        <tr>
+          <td>邮箱：</td>
+          <td>{$member.email|default="未填写"}</td>
+        </tr>
+        <tr>
+          <td>头像：</td>
+          <td>
+            {if $member.avatar}
+            <img src="{$member.userpic.filepath}" width="70" height="70" />
+            {else} {$member.avatar==0?"未上传":$member.avatar} {/if}
+          </td>
+        </tr>
+      </table>
+
+      <div>
+        {$member.enabled_text|default="审核中"}
+      </div>
+
+
+
+{/block}

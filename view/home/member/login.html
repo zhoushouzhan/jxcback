@@ -1,0 +1,49 @@
+{extend name="layout" /} {block name="main"}
+<form action="{:url('login')}" method="post" onsubmit="return formcallback();">
+  <div>
+    <div>账号</div>
+    <div><input type="text" name="username" /></div>
+  </div>
+  <div>
+    <div>密码</div>
+    <div><input type="password" name="password" /></div>
+  </div>
+  <div>
+    <div>账号保存</div>
+    <div>
+      <select name="lifetime">
+        <option value="0">不保存</option>
+        <option value="1 day">一天</option>
+        <option value="1 week">一周</option>
+        <option value="1 month">一月</option>
+        <option value="10 year">十年</option>
+      </select>
+    </div>
+  </div>
+  <div>
+    <div><button type="submit">登录</button></div>
+  </div>
+</form>
+{/block} {block name="script"}
+<script>
+  function formcallback() {
+    var params = $("form").serialize();
+    $.ajax({
+      type: "post",
+      url: $("form").attr("action"),
+      data: params,
+      dataType: "json",
+      success: function (response) {
+        alert(response.msg);
+        if (response.data.url) {
+          window.location.href = response.data.url;
+        }
+      },
+      error: function (e) {
+        alert(e.responseJSON.message);
+      },
+    });
+    return false;
+  }
+</script>
+{/block}

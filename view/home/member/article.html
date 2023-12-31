@@ -1,0 +1,23 @@
+{extend name="layout" /} {block name="main"}
+<div class="member_paner">
+  <div class="menu">
+    <div class="header">
+      <div>账号</div>
+      <div>{$member.username}</div>
+    </div>
+    <div class="item">
+      <a href="{:url('index/member/index')}">基础资料</a>
+    </div>
+    <div class="item">
+      <a href="{:url('index/member/article')}">文章中心</a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="mtit">
+      <div>文章管理</div>
+      <div><a href="{:url('index/member/article',['t'=>'1'])}">发布</a></div>
+    </div>
+    <hr />
+  </div>
+</div>
+{/block}
