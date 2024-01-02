@@ -2,7 +2,7 @@
 /*
  * @Author: 一品网络技术有限公司
  * @Date: 2022-06-21 09:57:50
- * @LastEditTime: 2022-09-19 09:41:35
+ * @LastEditTime: 2024-01-01 09:48:58
  * @FilePath: \web\app\index\controller\Index.php
  * @Description:
  * 联系QQ:58055648
@@ -19,7 +19,7 @@ class Index extends Base
     public function index()
     {
         View::assign("cols", '2.0进行中');
-        return view();
+        //return view();
     }
     public function test($wd = 'php')
     {

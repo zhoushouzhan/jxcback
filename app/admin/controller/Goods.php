@@ -2,7 +2,7 @@
 /*
  * @Author: 一品网络技术有限公司
  * @Date: 2022-06-21 09:57:50
- * @LastEditTime: 2022-10-22 11:27:17
+ * @LastEditTime: 2024-01-02 16:04:09
  * @FilePath: \web\app\admin\controller\cols.php
  * @Description:
  * 联系QQ:58055648
@@ -98,12 +98,14 @@ class Goods extends Base
         $dataList = $this->mod::with(['category','admin','factory'])->append(['metalInfo','stoneInfo','thumbFile'])->where($map)->order($order)->paginate($limit, false, ['page' => $page, 'query' => ['keyword' =>$keyword,'category_id'=>$category_id]]);
         $this->success('获取成功', $dataList);
     }
-    public function getall($ids)
+    public function getall($ids=[])
     {
-        $map = [];
-        if(input('ids')){
-            $map[] = ['id', 'in', input('ids')];
+        if(!$ids){
+            $this->success('更新成功');
         }
+        $map = [];
+        $map[] = ['id', 'in', $ids];
+
         $dataList = $this->mod::with(['category','admin'])->append(['thumbFile'])->where($map)->order('id', 'desc')->select();
         $this->success('获取成功', $dataList);
     }

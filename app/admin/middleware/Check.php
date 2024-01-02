@@ -2,7 +2,7 @@
 /*
  * @Author: 一品网络技术有限公司
  * @Date: 2022-06-21 10:52:00
- * @LastEditTime: 2022-09-11 11:59:42
+ * @LastEditTime: 2024-01-01 09:53:52
  * @FilePath: \web\app\admin\middleware\Check.php
  * @Description:
  * 联系QQ:58055648

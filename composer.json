@@ -23,15 +23,14 @@
         "php": ">=7.2.5",
         "topthink/framework": "^6.0.0",
         "topthink/think-orm": "^2.0",
-        "topthink/think-multi-app": "^1.0",
-        "topthink/think-view": "^1.0",
         "firebase/php-jwt": "^6.1",
-        "xiaodi/think-whoops": "^1.1",
         "nyg/holiday": "^1.0",
         "topthink/think-worker": "^3.0",
         "curl/curl": "^2.4",
         "phpmailer/phpmailer": "^6.6",
-        "phpoffice/phpspreadsheet": "^1.29"
+        "phpoffice/phpspreadsheet": "^1.29",
+        "topthink/think-multi-app": "^1.0",
+        "topthink/think-view": "^2.0"
     },
     "require-dev": {
         "symfony/var-dumper": "^4.2",
