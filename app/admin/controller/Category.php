@@ -63,7 +63,15 @@ class Category extends Base
             }
         }
     }
-
+    public function readTree($pid=0){
+        $map=[];
+        if($pid){
+            $map[]=['path','like',"%,{$pid},%"];
+        }
+        $items=$this->mod::where($map)->select()->toArray();
+        $tree=generateTree($items,$pid);
+        $this->success('ok', $tree);
+    }
     public function delete($ids)
     {
         if (!$ids) {

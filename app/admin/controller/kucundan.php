@@ -14,7 +14,7 @@ class Kucundan extends Base
         $this->mod = \app\common\model\Kucundan::class;
     }
 
-    public function index($keyword='',$limit=30,$page=0)
+    public function index($keyword='',$limit=20,$page=0)
     {
         $dataList =  $this->mod::order('id', 'desc')->with(['admin'])->append(['goodsCount','typeTip'])->paginate($limit, false, ['page' => $page, 'query' => ['keyword' => $keyword]]);
         $this->success('获取成功', $dataList);

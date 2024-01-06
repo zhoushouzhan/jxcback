@@ -12,7 +12,7 @@ class Goodsitem extends Base
         parent::initialize();
         $this->mod = \app\common\model\Goodsitem::class;
     }
-    public function index($keyword='',$status=0,$limit = 30, $page = 1)
+    public function index($keyword='',$status=0,$limit = 10, $page = 1)
     {
         $map = [];
         if($keyword){

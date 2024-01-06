@@ -4,7 +4,12 @@ use think\Model;
 use think\facade\Db;
 class Kucundan extends Model {
     use \mod\Kucundan;
-
+    /**
+     * 1:正常
+     * 2：异常
+     * 3：出售中
+     * 4：己售
+     */
     public static function onAfterWrite($data)
     {
         //入库
@@ -12,7 +17,7 @@ class Kucundan extends Model {
            self::importgoods($data);
         }
         //出库
-        if($data['type']==2){
+        if($data['type']==2&&$data['enabled']){
             self::exportgoods($data);
         }
     }
@@ -59,8 +64,8 @@ class Kucundan extends Model {
     //入库
     public static function importgoods($data){
 
-        $id=$data->id;
-        db::name('goodsitem')->where('source_id',$id)->delete();
+        //$id=$data->id;
+        //db::name('goodsitem')->where('source_id',$id)->delete();
         $insertData=[];
         $time=time();
         $goods_ids=[];
@@ -87,7 +92,19 @@ class Kucundan extends Model {
     }
     //出库
     public static function exportgoods($data){
-        
+        $id=$data->id;
+        $time=time();
+        foreach($data['bill'] as $v){
+            $maxcount=$v['numbers'];
+            $goods_id=$v['goods_id'];
+            $sellprice=$v['sellprice'];
+            db::name('goodsitem')->where('goods_id',$goods_id)->limit($maxcount)->order('id','asc')->update([
+                'sell_id'=>$id,
+                'status'=>4,
+                'sellprice'=>$sellprice,
+                'out_time'=>$time,
+            ]);
+        }
     }
 
 }

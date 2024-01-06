@@ -25,14 +25,8 @@ class Goods extends Base
         $this->mod = \app\common\model\Goods::class;
     }
 
-    public function index($keyword = '',$category_id=0,  $sdate = '',$edate='',$page=0,$limit=20)
+    public function index($keyword = '',$category_id=0,  $sdate = '',$edate='',$page=0,$limit=10)
     {
-
-
-
-        // $allData=db::name('goods')->column('id');
-        // updateStock($allData);
-        // halt($allData);
 
         $map = [];
         $code=input('code');
@@ -56,8 +50,6 @@ class Goods extends Base
             }else{
                 $map[] = ['category_id', '=', $category_id];
             }
-
-            
         }
 
         if($sdate){
@@ -79,10 +71,6 @@ class Goods extends Base
         if($stone){
             $map[] = ['stone', 'like', "%$stone%"];
         }
-
-
-
-
         //排序 
         $order=[];
 
@@ -95,7 +83,10 @@ class Goods extends Base
         }
 
 
-        $dataList = $this->mod::with(['category','admin','factory'])->append(['metalInfo','stoneInfo','thumbFile'])->where($map)->order($order)->paginate($limit, false, ['page' => $page, 'query' => ['keyword' =>$keyword,'category_id'=>$category_id]]);
+        $dataList = $this->mod::withCount(['stock'=>function($query,&$alias){
+            $query->where('status',1);
+            $alias='stock';
+        }])->with(['category','admin','factory'])->append(['metalInfo','stoneInfo','thumbFile'])->where($map)->order($order)->paginate($limit, false, ['page' => $page, 'query' => ['keyword' =>$keyword,'category_id'=>$category_id]]);
         $this->success('获取成功', $dataList);
     }
     public function getall($ids=[])
@@ -148,7 +139,10 @@ class Goods extends Base
             $r=$this->mod::with('category')->append(['metalInfo','stoneInfo','thumbFile'])->find($id);
         }
         if($code){
-            $r=$this->mod::with('category')->append(['metalInfo','stoneInfo','thumbFile'])->where('code','like',"%$code%")->find();
+            $r=$this->mod::withCount(['stock'=>function($query,&$alias){
+                $query->where('status',1);
+                $alias='stock';
+            }])->with('category')->append(['metalInfo','stoneInfo','thumbFile'])->where('code','like',"%$code%")->find();
         }
 
         if($r){
@@ -234,7 +228,6 @@ class Goods extends Base
         $res=$this->mod::where('id','in',$ids)->orderRaw("field(id,$idsstr)")->select();
 
         foreach($res as $k=>$v){
-
             $max=0;
             $id=$v['id'];
             $max=$numbers[$id];

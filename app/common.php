@@ -8,6 +8,24 @@
  * 联系QQ:58055648
  * Copyright (c) 2022 by 东海县一品网络技术有限公司, All Rights Reserved.
  */
+
+//create tree
+function generateTree($data,$pid=0){
+    $arr=[];
+    $tree=[];
+    foreach($data as $v){
+        $arr[$v['id']]=$v;
+    }
+    foreach($arr as $k=>$v){
+        if($v['pid']==$pid){
+            $tree[]=&$arr[$k];
+        }else{
+            $arr[$v['pid']]['children'][]=&$arr[$k];
+        }
+    }
+    return $tree;
+}
+
 //节点层级划分
 function layoutData($dataList, $key = 0)
 {

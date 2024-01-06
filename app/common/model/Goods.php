@@ -159,5 +159,9 @@ class Goods extends Model {
         public function factory(){
             return $this->belongsTo(Factory::class);
         }
+        //库存
+        public function stock(){
+            return $this->hasMany(Goodsitem::class);
+        }
 }
 ?>
