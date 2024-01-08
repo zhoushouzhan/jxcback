@@ -16,9 +16,38 @@ class Kucundan extends Base
 
     public function index($keyword='',$limit=20,$page=0)
     {
-        $dataList =  $this->mod::order('id', 'desc')->with(['admin'])->append(['goodsCount','typeTip'])->paginate($limit, false, ['page' => $page, 'query' => ['keyword' => $keyword]]);
+        $map=[];
+        if($type=input('type')){
+            $map[]=['type','=',$type];
+        }
+        if($enabled=input('enabled')){
+            $map[]=['enabled','=',0];
+        }else{
+            $map[]=['enabled','=',1];
+        }
+
+        $dataList =  $this->mod::where($map)->order('id', 'desc')->with(['admin'])->append(['goodsCount','typeTip'])->paginate($limit, false, ['page' => $page, 'query' => ['keyword' => $keyword]]);
         $this->success('获取成功', $dataList);
     }
+
+
+    public function sellorder($keyword='',$limit=20,$page=0)
+    {
+        $map=[];
+        if($type=input('type')){
+            $map[]=['type','=',$type];
+        }
+        if($enabled=input('enabled')){
+            $map[]=['enabled','=',0];
+        }else{
+            $map[]=['enabled','=',1];
+        }
+
+
+        $dataList =  $this->mod::where($map)->order('id', 'desc')->with(['admin','member'])->append(['goodsCount','typeTip','sumprice'])->paginate($limit, false, ['page' => $page, 'query' => ['keyword' => $keyword]]);
+        $this->success('获取成功', $dataList);
+    }
+
 
     public function save($id=0)
     {

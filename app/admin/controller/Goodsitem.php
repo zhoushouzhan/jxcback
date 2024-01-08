@@ -54,19 +54,21 @@ class Goodsitem extends Base
         $this->success('获取成功', $dataList);
     }
 
-    public function details($code=''){
+    public function details($code='',$godown_id=''){
         if($code==''){
             $this->error('请输入条码');
         }
         $map=[];
-        $map[]=['code','=',$code];
+        $map[]=['code','like',"%$code%"];
         $map[]=['status','=',1];
-
-        $r=$this->mod::with('category')->where($map)->find();
+        if($godown_id){
+            $map[]=['godown_id','=',$godown_id];
+        }
+        $r=$this->mod::with(['category','goods'])->where($map)->find();
         if($r){
             $this->success('获取成功',$r);
         }else{
-            $this->error('查无此货');
+            $this->error('无库存');
         }
     }
 

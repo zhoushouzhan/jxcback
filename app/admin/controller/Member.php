@@ -15,10 +15,15 @@ class Member extends Base
     }
 
 
-    public function index($keyword='',$limit=30,$page=0)
+    public function index($keywords='',$limit=30,$page=0)
     {
        
-        $dataList =  $this->mod::order('id', 'desc')->paginate($limit, false, ['page' => $page, 'query' => ['keyword' => $keyword]]);
+        $map=[];
+        if($keywords){
+            $map[]=['mobile|truename','like',"%{$keywords}%"];
+        }
+
+        $dataList =  $this->mod::where($map)->order('id', 'desc')->paginate($limit, false, ['page' => $page, 'query' => ['keywords' => $keywords]]);
         $this->success('获取成功', $dataList);
     }
 
